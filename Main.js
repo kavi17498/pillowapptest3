@@ -1,5 +1,5 @@
 ﻿// Set map options
-var myLatLng = { lat: 38.3460, lng: -0.4907 };
+var myLatLng = { lat: 7.8731, lng: 80.7718 };
 var mapOptions = {
     center: myLatLng,
     zoom: 7,
@@ -111,3 +111,55 @@ var autocomplete1 = new google.maps.places.Autocomplete(input1, options);
 
 var input2 = document.getElementById("to");
 var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+
+
+
+// Check if geolocation is supported, and watch for position changes
+if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(success, error);
+} else {
+    alert("Geolocation is not supported by your browser");
+}
+
+var blueMarkerIcon = {
+    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', // URL to the marker icon
+    scaledSize: new google.maps.Size(32, 32), // Size of the marker icon
+    origin: new google.maps.Point(0, 0), // Origin point of the marker icon (0,0 is the top-left corner)
+    anchor: new google.maps.Point(16, 32) // Anchor point of the marker icon (where it is placed on the map)
+};
+
+
+        // Function to handle success of geolocation
+        function success(pos) {
+            // Get current position coordinates and accuracy
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            const accuracy = pos.coords.accuracy;
+
+            // Create marker for current position
+            var marker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: map,
+                title: 'You are here',
+                icon: blueMarkerIcon // Set the custom marker icon
+            });
+
+            // Create accuracy circle around current position
+            var circle = new google.maps.Circle({
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.35,
+                map: map,
+                center: { lat: lat, lng: lng },
+                radius: accuracy
+            });
+        }
+        function error(err) {
+            if (err.code === 1) {
+                alert("Please allow geolocation access");
+            } else {
+                alert("Cannot get location");
+            }
+        }
