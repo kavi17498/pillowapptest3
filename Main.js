@@ -31,7 +31,7 @@ function updateCurrentLocation() {
             };
 
             // Check if the user is close to the destination
-            if (destinationLocation && google.maps.geometry.spherical.computeDistanceBetween(userLatLng, destinationLocation) < 50) { // Adjust the distance threshold as needed
+            if (destinationLocation && google.maps.geometry.spherical.computeDistanceBetween(userLatLng, destinationLocation) < 100) { // Adjust the distance threshold as needed
                 alert("You have reached your destination!");
             }
 
@@ -163,3 +163,18 @@ var blueMarkerIcon = {
                 alert("Cannot get location");
             }
         }
+
+        var draggableMarker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            draggable: true,
+            title: "Drag me!"
+        });
+
+        google.maps.event.addListener(draggableMarker, 'dragend', function(evt) {
+            var lat = evt.latLng.lat();
+            var lng = evt.latLng.lng();
+            document.getElementById('to').value = lat + ", " + lng;
+        });
+
+    
